@@ -1,0 +1,102 @@
+{% extends "teachers/teachers-base.html" %}
+
+{% block headcss %}
+{% parent %}
+{% endblock headcss %}
+{% block headjavascript %}
+{% parent %}
+<script type="text/javascript" src="../js/jquery.form.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	var $dialog = $("#new-lesson-dialog").dialog({
+		autoOpen: false,
+		resizable: false,
+		modal: true,
+		width: 400,
+		buttons: {
+			"Сохранить": function() {
+				//alert("Нажата кнопка Применить");
+				$("#new-lesson-form").submit();
+				$(this).dialog("close");
+			},
+			"Закрыть": function() {
+			  $(this).dialog("close");
+			}}
+	});
+	$('#link-new-lesson').click(function() {
+		$dialog.dialog('open');
+		// prevent the default action, e.g., following a link
+		return false;
+	});
+	$(".date_input").datepicker({
+		changeMonth: true,
+		changeYear: true
+	});
+	$("button, input:submit").button();
+
+	$('#dateRangeForm').ajaxForm ({ 
+    	target: '#gradesBlock' 
+	}); 
+
+	$('#new-lesson-form').submit(function() {
+		$(this).ajaxSubmit({target: '#gradesBlock'}); 
+		return false; 
+	}); 
+
+	$("#gradesBlock").ajaxSuccess(function(evt, request, settings){
+   		//alert("Table successfully loaded!");
+   	});
+	$('#dateRangeForm').submit();
+
+});
+</script>
+{% endblock headjavascript %}
+{% block content %}
+<br />
+<div>
+<form id="dateRangeForm" action="class_lessons.php" method="post">
+	<input name="action" value="changeDates" type="hidden">
+	<input name="fromAjax" value="1" type="hidden">
+	<input name="subject_id" value="{{subject_id}}" type="hidden">
+	<button id="link-new-lesson">Новый урок</button>
+	<input name="lesson_date_from" class="date_input" value="{{date_from}}" size="12" type="text"></td>
+	<input name="lesson_date_to" class="date_input" value="{{date_to}}" size="12" type="text"></td>
+	<input type="submit" id="reloadgradesBlock" value="Обновить таблицу оценок" />
+</form>
+</div>
+<div id="gradesBlock"></div>
+<div id="new-lesson-dialog" title="Новый урок">
+<form id="new-lesson-form" action="class_lessons.php" method="post">
+<input name="action" value="addlesson" type="hidden">
+<input name="fromAjax" value="1" type="hidden">
+<input name="subject_id" value="{{subject_id}}" type="hidden">
+<table>
+  <tbody><tr>
+    <td>Дата урока</td>
+    <td>
+    <input name="lesson_date" id="lesson_date_id" class="date_input" value="" size="26" type="text"></td>
+  </tr>
+
+    <tr>
+    <td>Тема урока</td>
+    <td><input name="topic" value="" size="26" type="text"></td>
+  </tr>
+    <tr>
+    <td>Тип урока</td>
+    <td>
+    <select name="lesson_type_id" id="$lesson_type_id">
+{% for lesson_type in lesson_types %}
+<option value="{{lesson_type['lesson_type_id']}}">{{lesson_type['lesson_type_name']}}</option>
+{% endfor %} 
+</select>
+    
+    </td>
+  </tr>
+</tbody></table>
+
+</form>
+</div>
+{% endblock %}
+{% block footer %}
+{% parent %}
+{% endblock %}

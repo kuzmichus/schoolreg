@@ -1,0 +1,28 @@
+<table id="rounded-corner">
+<thead>
+  <tr>
+    <th class="rounded-left">Класс</th>
+    <th>Руководитель</th>
+    <th>Учебный год</th>
+    <th class="rounded-right">&nbsp;</th>
+  </tr>
+</head>
+<tbody>
+{% for class in classes_list %}
+<tr>
+	<td>{{class['class']}}-{{class['letter']}}</td>
+	<td>{{class['teacher_name']}}</td>
+	<td>{{current_year['started']|date("d.m.Y")}}-{{current_year['finished']|date("d.m.Y")}}</td>
+	<td><a href="class.php?class_id={{class['class_id']}}">Редактировать</a></td>
+</tr>
+{% endfor %}
+</tbody>
+<tfoot>
+	<tr>
+		<td colspan="3" class="rounded-foot-left"></td>
+		<td class="rounded-foot-right">
+			<a href="add_class.php?school_year_id={{school_year_id}}" onClick="showDialog(this);return false" class="add" title="Добавить класс">Добавить класс</a>
+		</td>
+	</tr>
+</tfoot>
+</table>

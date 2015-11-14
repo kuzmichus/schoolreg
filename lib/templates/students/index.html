@@ -1,0 +1,26 @@
+{% extends "students/students-base.html" %}
+
+{% block headcss %}
+{% parent %}
+{% endblock headcss %}
+{% block headjavascript %}
+{% parent %}
+<script type="text/javascript">
+  $(document).ready(function(){
+		$( "#quarters-tabs" ).tabs({ cookie: { expires: 30 } });
+	});
+</script>
+{% endblock headjavascript %}
+
+{% block content %}
+<h2>{{year.name_year}}</h2>
+<div id="quarters-tabs">
+	<ul>
+{% for quarter in quarters %}
+		<li><a href="index.php?fromAjax=1&quarter_id={{quarter['quarter_id']}}">{{quarter['quarter_name']}}</a></li>
+{% endfor %}
+	</ul>
+</div>
+{% endblock content %}
+{% block footer %}{% endblock footer %}
+

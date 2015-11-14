@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+  {% block head %}
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+  {% block headcss %}  
+	<link type="text/css" rel="stylesheet" href="../ui-theme/{{ui_theme}}/jquery-ui.css" />
+	<link type="text/css" rel="stylesheet" href="../thickbox.css" />
+    <link type="text/css" rel="stylesheet" href="../style.css" />
+  {% endblock headcss%}
+  {% block headjavascript %}
+    <script type="text/javascript" src="../js/jquery.js"></script>
+    <script type="text/javascript" src="../js/jquery.jeditable.js"></script>
+	<script type="text/javascript" src="../js/jquery-ui.js"></script>
+    <script type="text/javascript" src="../js/jquery.cookie.js"></script>
+	<script type="text/javascript" src="../js/i18n/jquery-ui.datepicker-ru.js"></script>
+	<script type="text/javascript" src="../js/jquery.validate.js"></script>
+	<script type="text/javascript" src="../js/i18n/jquery.validate-ru.js"></script>
+	<script type="text/javascript" src="../js/jquery.maskedinput.js"></script>
+  {% endblock headjavascript %}
+  {% block headtitle %}
+    <title>{% block title %}Школьный журнал{% endblock %}</title>
+  {% endblock headtitle %}  
+  {% endblock head %}
+</head>
+<body>
+<br />
+  <div id="header" align="center">
+{% block header %}
+ <table border="0" cellspacing="0" cellpadding="0" class="table_menu" style="width:200px">
+  <tr>
+    <td><img src="../images/circle_left_top.gif" alt="" width="6" height="6"></td>
+    <td valign="top" class="border_top"><img src="../images/border.gif" alt="" width="1" height="1"></td>
+    <td><img src="../images/circle_right_top.gif" alt="" width="6" height="6"></td>
+  </tr>
+  <tr>
+    <td class="border_left">&nbsp;</td>
+    <td class="padding"><table>
+      <tr>
+        <td>&nbsp;<a href="index.php">Список класов</a>&nbsp;</td>
+        <td align="center"><img src="../images/dec.png" alt="" width="1" height="51"></td>
+        <td>&nbsp;<a href="login.php?action=logout">Выход</a>&nbsp;</td>
+      </tr>
+    </table></td>
+    <td class="border_right">&nbsp;</td>
+  </tr>
+  <tr>
+    <td><img src="../images/circle_left_bottom.gif" alt="" width="6" height="6"></td>
+    <td width="99%" valign="bottom" class="border_bottom"><img src="../images/border.gif" alt="" width="1" height="1"></td>
+    <td><img src="../images/circle_right_bottom.gif" alt="" width="6" height="6"></td>
+  </tr>
+</table>
+{% endblock header %}
+</div>
+  <br />
+  <div id="content">{% block content %}{% endblock %}</div>
+  <br />
+  <div id="footer" align="center">
+{% block footer %}
+{% set rel_path %}../{% endset %}
+{% include 'cr_footer.html' %}
+{% endblock %}
+  </div>
+</body>
+</html>

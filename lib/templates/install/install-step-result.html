@@ -1,0 +1,73 @@
+{% extends "install/install-base.html" %}
+{% block head %}
+  {% parent %}
+  {% block headjavascript %}
+    {% parent %}
+    <script type="text/javascript" src="../js/jquery.js"></script>
+	<script type="text/javascript" src="../js/jquery.validate.js"></script>
+	<script type="text/javascript" src="../js/i18n/jquery.validate-ru.js"></script>
+  {% endblock headjavascript %}
+{% endblock head %}
+
+{% block content %}
+<script type="text/javascript">
+$(document).ready(function() { 
+	$('.ValidatedForm').validate();
+});
+</script>
+
+<form action="index.php" method="post" class="ValidatedForm">
+<input type="hidden" name="step" value="{{step}}" />
+<input type="hidden" name="action" value="{{ ErrorText ? 'retry' : 'next' }}" />
+
+<table align="center">
+{% for logItem in log %}
+<tr>
+<td class="logItemName">{{loop.index}}.</td>
+<td class="logItemName">{{logItem.name}}</td>
+<td class="logItemResult">{{logItem.result}}</td>
+</tr>
+{% endfor %}
+</table>
+
+
+<table align="center">
+{% if resultText %}
+  <tr>
+    <td colspan="2"><span class="resultText">{{resultText}}</span></td>
+  </tr>
+{% endif %}
+{% if ErrorText %}
+  <tr>
+    <td colspan="2"><span class="errorText">{{ErrorText}}</span></td>
+  </tr>
+{% endif %}
+{% if addNewUser %}
+  <tr>	
+    <td colspan="2">&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan="2" class="title">Администратор системы "Школьный журнал"</td>
+  </tr>
+  <tr>
+    <td>Администратор</td>
+    <td><input type="text" name="user_name" class="required" /></td>
+  </tr>
+  <tr>
+    <td>Пароль</td>
+    <td><input type="text" name="user_pwd" class="required" /></td>
+  </tr>
+{% endif %}
+  <tr>
+    <td colspan="2" align="center">
+		<br />
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" value="{{ ErrorText ? 'Повторить' : 'Далее' }}" />
+    </td>
+  </tr>
+</table>
+</form>
+{% endblock content %}

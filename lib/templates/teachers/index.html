@@ -1,0 +1,37 @@
+{% extends "teachers/teachers-base.html" %}
+
+{% block headcss %}
+{% parent %}
+{% endblock headcss %}
+{% block headjavascript %}
+{% endblock headjavascript %}
+
+{% block content %}
+<div align="center">
+<span class="head_top">Список классов:</span>
+<table id="rounded-corner">
+<thead>
+  <tr>
+    <th class="rounded-left">Класс</th>
+    <th>Предмет</th>
+    <th class="rounded-right">&nbsp;</th>
+  </tr>
+</thead>
+<tbody>
+{% for class in classes_list %}
+  <tr>
+  	<td>{{class['class']}}-{{class['letter']}}</td>
+  	<td>{{class['discipline']}}</td>
+  	<td><a href="class_lessons.php?subject_id={{class['subject_id']}}">Уроки</a></td>
+  </tr>
+{% endfor %}
+</tbody>
+<tfoot>
+	<tr>
+    	<td colspan="2" class="rounded-foot-left"></td>
+        <td class="rounded-foot-right">&nbsp;</td>
+    </tr>
+</tfoot>
+</table>
+</div>
+{% endblock content %}

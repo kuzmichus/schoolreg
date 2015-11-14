@@ -1,0 +1,42 @@
+<div>
+<h3>{{quarter.started_date}} - {{quarter.finished_date}}</h3>
+<div id="accordion">
+{% for month, monthdays in dates %}
+    <h3><a href="#">{{month}}</a></h3>
+    <div>
+		<table id="rounded-corner" width="100%">
+		<thead>
+  		<tr>
+    		<th><font size="1px">Дисциплина</font></th>
+{% for encdate, day in monthdays %}
+    		<th><font size="1px">{{day.lesson_day}}<br />{{day.lesson_weekday_w}}</font></th>
+{% endfor %}
+
+  		</tr>
+		</thead>
+{% for discipline_id, discipline in disciplines %} 
+		<tr>
+			<td nowrap="nowrap"><font size="1px">{{discipline}}</font></td>
+{% for encdate, day in monthdays %}
+			<td>
+{% for grade in grades[discipline_id][encdate] %}
+ <div title="{{grade.lesson_type_name}}{{grade.topic?': ':''}}{{grade.topic}}" {% if grade['lesson_type_id']>1 %}class="grade_special"{% endif %}>{{grade['grade']}}</div>
+{% else %}
+&nbsp;
+{% endfor %}
+			</td>
+{% endfor %}
+		</tr>
+{% endfor %}
+		<tr>
+		</tr>
+		</table>
+    </div>
+{% endfor %}
+</div>
+</div>
+<script type="text/javascript">
+  $(document).ready(function(){
+		$( "#accordion" ).accordion();
+	});
+</script>

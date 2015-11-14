@@ -1,0 +1,77 @@
+<script type="text/javascript">
+$(document).ready(function() { 
+	$('#addClassForm').validate({
+		messages: {
+			teacher_id: "Укажите классного руководителя"
+		}
+	});
+
+	// bind form using ajaxForm 
+    $('#addClassForm').ajaxForm({ 
+        // dataType identifies the expected content type of the server response 
+        dataType:  'json', 
+         // success identifies the function to invoke when the server response 
+        // has been received 
+        success:   processJson 
+    }); 
+});
+function processJson(data) { 
+    // 'data' is the json object returned from the server
+    if (data.isError) {
+    	//alert(data.errorText);
+    	$('#resultError').text(data.errorText);
+    } else {
+    	$('#resultError').empty();
+    	if (($dialog != undefined) && ($dialog.dialog != undefined)) {
+    		$dialog.dialog("close");
+    	}
+    	if (typeof(updateClassList) == 'function') {
+    		updateClassList();
+    	}
+    }
+}
+</script>
+
+<form id="addClassForm" action="add_class.php" method="post">
+<input type="hidden" name="action" value="add" />
+<input type="hidden" name="school_year_id" value="{{school_year_id}}" class="required" />
+<span id="resultError" class="error"></span>
+<table>
+  <tr>
+    <td>Номер класса</td>
+    <td>:</td>
+    <td>
+<select name="class">
+{% for class_number in class_numbers %}
+  <option value="{{class_number}}">{{class_number}}</option>
+{% endfor %}
+</select>
+	</td>
+  </tr>
+  <tr>
+    <td>Литерал класса</td>
+    <td>:</td>
+    <td>
+<select name="letter">
+{% for class_letter in class_letters %}
+  <option value="{{class_letter}}">{{class_letter}}</option>
+{% endfor %}
+</select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>Классный руководитель<font color="red">*</font></td>
+    <td>:</td>
+    <td>
+<select name="teacher_id" id="teacher_id_id" class="required">
+  <option value="">&nbsp;-</option>
+{% for teacher in teachers %}
+<option value="{{teacher['teacher_id']}}">{{ "%s %s %s"|format(teacher['last_name'],teacher['first_name'],teacher['middle_name']) }}</option>
+{% endfor %} 
+</select>
+    </td>
+  </tr>
+</table>
+<br />
+</form>

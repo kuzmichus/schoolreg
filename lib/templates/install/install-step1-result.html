@@ -1,0 +1,37 @@
+{% extends "install/install-base.html" %}
+
+{% block content %}
+<form action="index.php" method="post">
+<input type="hidden" name="step" value="1" />
+<input type="hidden" name="action" value="next" />
+<table align="center">
+  <tr>
+    <td><span class="resultText">{{resultText}}</span></td>
+  </tr>
+{% if confFileContent %}
+  <tr>
+    <td>Содержимое файла конфигуции:</td>
+  </tr>
+  <tr>
+    <td>
+    <hr />
+    <pre>
+{% filter escape %}
+{{confFileContent}}
+{% endfilter %}
+    <hr />
+    </pre>
+    </td>
+  </tr>
+{% endif %}
+  <tr>
+    <td><br /></td>
+  </tr>
+  <tr>
+    <td  align="center">
+      <input type="submit" value="Далее" />
+    </td>
+  </tr>
+</table>
+</form>
+{% endblock content %}

@@ -1,0 +1,106 @@
+<br />
+{% if queryResult %}
+<span class="dbResult">{{queryResult}}</span>
+{% endif %}
+<div id="lessontabs">
+	<ul>
+		<li><a href="#tabs-1"><span class="tab_head_top">Таблица оценок</span></a></li>
+		<li><a href="#tabs-2"><span class="tab_head_top">Список уроков</span></a></li>
+	</ul>
+<div id="tabs-1">
+<form id="gradeForm" action="class_lessons.php" method="post">
+<input type="hidden" name="subject_id" value="{{ subject_id }}" />
+<input type="hidden" name="action" value="update" />
+<input type="hidden" name="fromAjax" value="1" />
+<div align="center"></div>
+<table  id="rounded-corner" width="100%" align="center">
+  <thead>
+  <tr class="TableHead">
+    <th class="rounded-left">№</th>
+    <th>Имя</th>
+{% for item in lessons %}
+	<th {% if loop.last %}class="rounded-right"{% endif %}><div title="{{item.lesson_type_name}}{{item.topic?': ':''}}{{item.topic}}">{{item.lesson_date_short}}</div></th>
+{% endfor %}
+  </tr>
+  </thead>
+  <tbody>
+{% set existActiveLesson %}0{% endset %}
+{% for student in students_list %}
+	<tr>
+		<td>{{loop.index}}</td><td nowrap="nowrap">{{student['student_name']}}</td>
+	{% for student_grade in student.grades %}
+		<td align="center">
+		{% if student_grade.active %}
+			{% set existActiveLesson %}1{% endset %}
+			<input type="text" name="grades[{{student_grade.lesson_id}}][{{student.student_id}}]" size="2" value="{{student_grade.grade}}" maxlength="2" />
+		{% else %}
+		 	<span id="grade_{{student.student_id}}_{{subject_id}}_{{student_grade.lesson_id}}" class="grade{% if student_grade['lesson_type_id'] > 1 %} grade_special{% endif %}" style="display: inline">{{student_grade.grade}}</span>
+		{% endif %} 
+    	</td>
+	{% endfor %}
+	</tr>
+{% endfor %}
+  </tbody>
+  <tfoot>
+  	<tr class="TableHead">
+    	<td class="rounded-foot-left">&nbsp;</td>
+        <td>&nbsp;</td>
+{% for item in lessons %}
+		<td {% if loop.last %}class="rounded-foot-right"{% endif %}><div title="{{item.lesson_type_name}}{{item.topic?': ':''}}{{item.topic}}">{{item.lesson_date_short}}</div></td>
+{% endfor %}
+        </tr>
+    </tfoot>
+</table>
+<br />
+<input type="submit" value="Сохранить" {% if not existActiveLesson %}disabled="disabled"{% endif %}/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="submit" value="Закончить урок" onClick="javascript:this.form.action.value='close';" {% if not existActiveLesson %}disabled="disabled"{% endif %}/>
+</form>
+</div>
+<div id="tabs-2">
+<table id="rounded-corner" width="100%" align="center">
+<thead>
+  <tr>
+    <th class="rounded-left">Дата</th>
+    <th>Тип</th>
+    <th class="rounded-right">Тема урока</th>
+  </tr>
+</thead>
+<tbody>
+{% for lesson in lessons %}
+	<tr>
+		<td>{{lesson['lesson_date_short']}}</td>
+		<td>{{lesson['lesson_type_name']}}</td>
+		<td>{{lesson['topic']}}</td>
+	</tr>
+{% endfor %}
+</tbody>
+<tfoot>
+	<tr>
+    	<td class="rounded-foot-left">&nbsp;</td>
+       	<td>&nbsp;</td>
+        <td class="rounded-foot-right">&nbsp;</td>
+	</tr>
+</tfoot>
+</table>
+</div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){
+	$("button, input:submit").button();
+	
+	$('#gradeForm').ajaxForm ({ 
+        	target: '#gradesBlock' 
+    }); 
+	$(".grade").editable("savegrade.php", {
+	      indicator : "<img src='images/indicator.gif'>",
+    	  tooltip   : "Двойной клик для редактирования...",
+      	placeholder: '&nbsp;&nbsp;&nbsp;',
+      	event     : "dblclick",
+      	width : 25
+  	});
+	$(function() {
+		$( "#lessontabs" ).tabs({ cookie: { expires: 30 } });
+	});
+});
+</script>

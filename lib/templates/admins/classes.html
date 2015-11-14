@@ -1,0 +1,77 @@
+{% extends "admins/admin-base.html" %}
+
+{% block headcss %}
+{% parent %}
+{% endblock headcss %}
+{% block headjavascript %}
+{% parent %}
+<script type="text/javascript" src="../js/jquery.form.js"></script>
+<script type="text/javascript">
+var $loading = $('<img src="images/loading.gif" alt="loading" class="loading">');
+var $dialog;
+
+$(document).ready(function(){
+	$('#selectYearForm').ajaxForm ({ 
+    	target: '#classesBlock'
+    }); 
+});
+
+function updateClassList() {
+	$('#selectYearForm').submit()
+}
+
+function showDialog(callinput){
+  if ($dialog == undefined)
+	  $dialog = $('<div></div>');
+  $dialog = $dialog.append($loading.clone());
+  $dialog.dialog({
+       autoOpen: true,
+       modal: true,
+       title: "Добавить класс",
+       open: function() {
+    	   		$(this).load(callinput.href);
+           	 },
+	   close: function() {
+		   		$(this).remove();
+		      },
+  	   buttons: {
+				 	"Сохранить": function() {
+						$("#addClassForm").submit();
+			        },
+					"Закрыть": function() {
+						$(this).dialog("close");
+				    }
+	   },
+       height: 230,
+       width: 420
+  });
+  return false;
+}
+</script>
+{% endblock headjavascript %}
+{% block content %}
+<br />
+<div align="center">
+<form id="selectYearForm" action="classes.php" method="get">
+<span class="head_top">Учебный год:
+<select name="school_year_id" onChange="javascript: $('#selectYearForm').submit();">
+{% for school_year in school_years %}
+<option value="{{school_year['school_year_id']}}" {% if school_year['school_year_id']==school_year_id %} selected="selected" {% endif %}>
+{{school_year['started']|date("d.m.Y")}} - {{school_year['finished']|date("d.m.Y")}}
+</option>
+{% endfor %}
+</select>
+</span>
+<br /><br />
+<span class="head_top">Список классов: </span>
+</form>
+</div>
+
+<div id="classesBlock" align="center">
+{% include "admins/classes-ajax.html" %}
+</div>
+<br />
+{% endblock %}
+{% block footer %}
+{% parent %}
+{% endblock %}

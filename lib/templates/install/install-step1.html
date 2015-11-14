@@ -1,0 +1,70 @@
+{% extends "install/install-base.html" %}
+
+{% block head %}
+  {% parent %}
+  {% block headjavascript %}
+    {% parent %}
+    <script type="text/javascript" src="../js/jquery.js"></script>
+	<script type="text/javascript" src="../js/jquery.validate.js"></script>
+	<script type="text/javascript" src="../js/i18n/jquery.validate-ru.js"></script>
+  {% endblock headjavascript %}
+{% endblock head %}
+
+{% block content %}
+<script type="text/javascript">
+$(document).ready(function() { 
+	$('.ValidatedForm').validate();
+});
+</script>
+<form action="index.php" method="post" class="ValidatedForm">
+<input type="hidden" name="step" value="1" />
+<input type="hidden" name="action" value="save" />
+<table align="center">
+  <tr>
+    <td colspan="2" class="title">Соединение с БД</td>
+  </tr>
+    <td>Сервер</td>
+    <td><input type="text" name="db_server" value="{{conf_db_host}}" class="required" /></td>
+  </tr>
+  <tr>
+    <td>Логин</td>
+    <td><input type="text" name="db_login" value="{{conf_db_user}}" class="required" /></td>
+  </tr>
+  <tr>
+    <td>Пароль</td>
+    <td><input type="text" name="db_passwd" value="{{conf_db_passwd}}" class="required" /></td>
+  </tr>
+  <tr>
+    <td>База данных</td>
+    <td><input type="text" name="db_name" value="{{conf_db_base}}" class="required" /></td>
+  </tr>
+  <tr>
+    <td colspan="2">&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan="2" class="title">ePochta SMS</td>
+  </tr>
+  <tr>
+    <td>ePochta SMS - Логин</td>
+    <td><input type="text" name="epochtasms_login" value="{{conf_epochtasms_login}}"/></td>
+  </tr>
+  <tr>
+    <td>ePochta SMS - Пароль</td>
+    <td><input type="text" name="epochtasms_passwd" value="{{conf_epochtasms_passwd}}"/></td>
+  </tr>
+  <tr>
+    <td>ePochta SMS - Отправитель</td>
+    <td><input type="text" name="epochtasms_from" value="{{conf_epochtasms_from}}"/></td>
+  </tr>
+  <tr>
+    <td colspan="2">&nbsp;</td>
+  </tr>
+
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" value="Сохранить" />
+    </td>
+  </tr>
+</table>
+</form>
+{% endblock content %}

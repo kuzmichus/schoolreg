@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="ru">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+{% block head %}
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+  {% block headcss %}  
+    <link type="text/css" rel="stylesheet" href="../style.css" />
+  {% endblock headcss%}
+  {% block headjavascript %}
+  {% endblock headjavascript %}
+    <title>{% block title %}Школьный журнал{% endblock %}</title>
+{% endblock %}
+</head>
+<body>
+  <div id="pageHeader">Установка системы "Школьный журнал"</div>
+  <div id="stepDesc">Шаг {{step}} - {{stepDesc}}</div>
+  <div id="content">{% block content %}{% endblock %}</div>
+  <br />
+  <div id="footer" align="center">
+{% block footer %}
+{% set rel_path %}../{% endset %}
+{% include 'cr_footer.html' %}
+{% endblock %}
+  </div>
+</body>
